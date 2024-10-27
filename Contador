@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Misterioso de Halloween</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a0000; /* Fondo oscuro rojizo */
+            color: #ff3333; /* Color rojo para el texto */
+            text-align: center;
+        }
+
+        /* Contenedor del contenido */
+        .contenedor {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Título */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff3333;
+        }
+
+        /* Contador */
+        .contador {
+            font-size: 3rem;
+            color: #ff6666; /* Color rojo más claro */
+        }
+
+        /* Mensaje al finalizar el contador */
+        #anuncio {
+            display: none;
+            font-size: 2rem;
+            color: #ff1a1a;
+            margin-top: 30px;
+        }
+
+        /* Fondo de signos de interrogación */
+        .fondo-interrogaciones {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .fondo-interrogaciones span {
+            font-size: 5rem;
+            color: rgba(255, 51, 51, 0.1); /* Color tenue para signos de interrogación */
+            display: block;
+            position: absolute;
+            animation: move 10s infinite alternate;
+        }
+
+        /* Colocación de los signos */
+        .fondo-interrogaciones span:nth-child(1) {
+            top: 10%;
+            left: 10%;
+        }
+        .fondo-interrogaciones span:nth-child(2) {
+            top: 20%;
+            left: 50%;
+        }
+        .fondo-interrogaciones span:nth-child(3) {
+            top: 50%;
+            left: 80%;
+        }
+        .fondo-interrogaciones span:nth-child(4) {
+            top: 70%;
+            left: 20%;
+        }
+
+        /* Ojo y QR */
+        .ojo-qr {
+            display: none;
+            margin-top: 50px;
+        }
+
+        .ojo-qr img {
+            width: 150px;
+            height: 150px;
+            margin-top: 20px;
+        }
+
+        @keyframes move {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo con signos de interrogación -->
+    <div class="fondo-interrogaciones">
+        <span>?</span><span>?</span><span>?</span><span>?</span>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="contenedor">
+        <h1>¿Estás listo para conocer la verdad absoluta?</h1>
+        <div class="contador" id="contador">
+            <span id="dias"></span> días 
+            <span id="horas"></span> horas 
+            <span id="minutos"></span> minutos 
+            <span id="segundos"></span> segundos
+        </div>
+
+        <!-- Mensaje final cuando se acabe el contador -->
+        <div id="anuncio">¡La verdad ha sido revelada!</div>
+
+        <!-- Ojo y código QR -->
+        <div class="ojo-qr" id="ojo-qr">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Human-eye-sky.jpg/640px-Human-eye-sky.jpg" alt="Ojo misterioso">
+            <img src="" alt="Código QR" id="qr">
+        </div>
+    </div>
+
+    <script>
+        function iniciarContador() {
+            const fechaObjetivo = new Date("October 30, 2024 00:00:00").getTime();
+
+            const intervalo = setInterval(function () {
+                const ahora = new Date().getTime();
+                const distancia = fechaObjetivo - ahora;
+
+                const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+                document.getElementById("dias").innerText = dias;
+                document.getElementById("horas").innerText = horas;
+                document.getElementById("minutos").innerText = minutos;
+                document.getElementById("segundos").innerText = segundos;
+
+                // Cuando llega a la fecha objetivo
+                if (distancia < 0) {
+                    clearInterval(intervalo);
+                    document.getElementById("contador").style.display = "none";
+                    document.getElementById("anuncio").style.display = "block";
+                    mostrarOjoQR();
+                }
+            }, 1000);
+        }
+
+        function mostrarOjoQR() {
+            document.getElementById("ojo-qr").style.display = "block";
+        }
+
+        iniciarContador();
+    </script>
+</body>
+</html>
